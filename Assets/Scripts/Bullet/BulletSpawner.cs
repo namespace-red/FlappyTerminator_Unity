@@ -3,10 +3,10 @@ using UnityEngine;
 public class BulletSpawner : SpawnerWithPool<Bullet>
 {
     private Vector3 _position;
-    private Vector2 _direction;
+    private Vector3 _direction;
     private LayerMask _layerMask;
 
-    public Bullet Spawn(Vector3 position, Vector2 direction, LayerMask layerMask)
+    public Bullet Spawn(Vector3 position, Vector3 direction, LayerMask layerMask)
     {
         _position = position;
         _direction = direction;
@@ -17,7 +17,8 @@ public class BulletSpawner : SpawnerWithPool<Bullet>
     protected override void OnGetObject(Bullet bullet)
     {
         bullet.transform.position = _position;
-        bullet.Init(_direction, _layerMask);
+        bullet.transform.right = _direction;
+        bullet.gameObject.layer = _layerMask;
         base.OnGetObject(bullet);
     }
 }

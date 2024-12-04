@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover))]
 public class Player : StarShip
 {
     private const int LeftMouseButton = 0;
+    
+    [SerializeField] private BulletSpawner _bulletSpawner;
     
     private PlayerMover _mover;
     private bool _isMoving;
@@ -13,6 +16,11 @@ public class Player : StarShip
     {
         base.Awake();
         _mover = GetComponent<PlayerMover>();
+        
+        if (_bulletSpawner == null)
+            throw new NullReferenceException(nameof(_bulletSpawner));
+        
+        Shooter.Init(_bulletSpawner);
     }
 
     private void Update()
@@ -38,7 +46,7 @@ public class Player : StarShip
 
         if (_isAttacking && Shooter.CanUse)
         {
-            Shooter.Attack();
+            Shooter.Shoot();
         }
 
         _isAttacking = false;

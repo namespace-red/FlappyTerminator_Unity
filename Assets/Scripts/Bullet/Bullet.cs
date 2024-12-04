@@ -27,12 +27,6 @@ public class Bullet : MonoBehaviour, IPoolableObject
         _mover.Stop();
     }
 
-    public void Init(Vector2 direction, LayerMask layerMask)
-    {
-        _mover.Init(direction);
-        gameObject.layer = layerMask;
-    }
-
     private void Release()
     {
         Released?.Invoke(this);

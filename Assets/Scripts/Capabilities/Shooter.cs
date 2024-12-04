@@ -8,12 +8,12 @@ public class Shooter : MonoBehaviour
     
     [SerializeField, Min(0)] private float _coolDown;
     [SerializeField] private Transform _shootPoint;
-    [SerializeField] private Vector2 _direction;
-    [SerializeField] private BulletSpawner _bulletSpawner;
     
+    private BulletSpawner _bulletSpawner;
     private Timer _timer = new Timer();
 
     public bool CanUse => _timer.Enabled == false;
+    public float CoolDown => _coolDown;
 
     private void Awake()
     {
@@ -24,18 +24,17 @@ public class Shooter : MonoBehaviour
     {
         if (_shootPoint == null)
             throw new NullReferenceException(nameof(_shootPoint));
-
-        if (_direction == Vector2.zero)
-            throw new ArgumentException(nameof(_direction));
-        
-        if (_bulletSpawner == null)
-            throw new NullReferenceException(nameof(_bulletSpawner));
     }
 
-    public void Attack()
+    public void Init(BulletSpawner bulletSpawner)
+    {
+        _bulletSpawner = bulletSpawner ?? throw new NullReferenceException(nameof(bulletSpawner));
+    }
+    
+    public void Shoot()
     {
         _timer.Interval = _coolDown * MsecInSec;
         _timer.Start();
-        _bulletSpawner.Spawn(_shootPoint.position, _direction, gameObject.layer);
+        _bulletSpawner.Spawn(_shootPoint.position, transform.right, gameObject.layer);
     }
 }

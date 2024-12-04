@@ -10,15 +10,10 @@ public class BulletMover : MonoBehaviour
     {
         if (_isMoving)
         {
-            transform.Translate(transform.right * (_speed * Time.fixedDeltaTime));
+            transform.position += transform.right * (_speed * Time.fixedDeltaTime);
         }
     }
 
-    public void Init(Vector2 direction)
-    {
-        transform.right = direction;
-    }
-    
     public void Move()
     {
         _isMoving = true;
