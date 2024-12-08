@@ -9,6 +9,7 @@ public class SpawnerWithPool<T> : MonoBehaviour
     [SerializeField] private Transform _prefabParent;
 
     private ObjectPool<T> _pool;
+    
     protected virtual void Awake()
     {
         _pool = new ObjectPool<T>(OnCreateObject, OnGetObject, OnReleaseObject, OnDestroyObject);
