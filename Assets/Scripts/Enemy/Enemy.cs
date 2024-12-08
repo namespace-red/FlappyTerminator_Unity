@@ -8,13 +8,13 @@ public class Enemy : StarShip, IPoolableObject
     
     private void OnEnable()
     {
-        Health.Died += Die;
+        Health.Died += Release;
         StartCoroutine(RunAttack());
     }
 
     private void OnDisable()
     {
-        Health.Died -= Die;
+        Health.Died -= Release;
     }
 
     public void Init(BulletSpawner bulletSpawner)
@@ -23,7 +23,7 @@ public class Enemy : StarShip, IPoolableObject
         Shooter.Init(bulletSpawner);
     }
     
-    private void Die()
+    public void Release()
     {
         Released?.Invoke(this);
     }

@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour, IPoolableObject
         _mover.Stop();
     }
 
-    private void Release()
+    public void Release()
     {
         Released?.Invoke(this);
     }
