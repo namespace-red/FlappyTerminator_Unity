@@ -1,39 +1,40 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(UserInput))]
 [RequireComponent(typeof(PlayerMover))]
 public class Player : StarShip
-{
-    private const int LeftMouseButton = 0;
-    
+{    
     [SerializeField] private BulletSpawner _bulletSpawner;
-    
+
+    private UserInput _userInput;
     private PlayerMover _mover;
     private bool _isMoving;
-    private bool _isAttacking;
 
     protected override void Awake()
     {
         base.Awake();
-        _mover = GetComponent<PlayerMover>();
         
         if (_bulletSpawner == null)
             throw new NullReferenceException(nameof(_bulletSpawner));
         
+        _userInput = GetComponent<UserInput>();
+        _mover = GetComponent<PlayerMover>();
+        
         Shooter.Init(_bulletSpawner);
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _isMoving = true;
-        }
+        _userInput.SpacePressed += OnMoveButtonPressed;
+        _userInput.LeftMousePressed += OnShootButtonPressed;
+    }
 
-        if (Input.GetMouseButton(LeftMouseButton))
-        {
-            _isAttacking = true;
-        }
+
+    private void OnDisable()
+    {
+        _userInput.SpacePressed -= OnMoveButtonPressed;
+        _userInput.LeftMousePressed -= OnShootButtonPressed;
     }
 
     private void FixedUpdate()
@@ -43,12 +44,18 @@ public class Player : StarShip
             _mover.Move();
             _isMoving = false;
         }
-
-        if (_isAttacking && Shooter.CanUse)
+    }
+	
+	private void OnMoveButtonPressed()
+	{
+		_isMoving = true;
+	}
+	
+	private void OnShootButtonPressed()
+	{
+        if (Shooter.CanUse)
         {
             Shooter.Shoot();
         }
-
-        _isAttacking = false;
-    }
+	}
 }
