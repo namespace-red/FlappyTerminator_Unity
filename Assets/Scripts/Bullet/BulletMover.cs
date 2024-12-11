@@ -6,11 +6,11 @@ public class BulletMover : MonoBehaviour
 
     private bool _isMoving;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_isMoving)
         {
-            transform.position += transform.right * (_speed * Time.fixedDeltaTime);
+            transform.position += transform.right * (_speed * Time.deltaTime);
         }
     }
 
